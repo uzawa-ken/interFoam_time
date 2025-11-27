@@ -52,6 +52,8 @@ Description
 #include "fvOptions.H"
 #include "CorrectPhi.H"
 #include "fvcSmooth.H"
+#include "cpuTime.H"
+#include "cellQuality.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -77,6 +79,10 @@ int main(int argc, char *argv[])
     #include "createAlphaFluxes.H"
     #include "initCorrectPhi.H"
     #include "createUfIfPresent.H"
+
+    // Timing accumulators for pEqn
+    double accPEqnAsm = 0.0;
+    double accPEqnSol = 0.0;
 
     if (!LTS)
     {
@@ -173,6 +179,17 @@ int main(int argc, char *argv[])
         }
 
         runTime.write();
+
+        // Output pEqn timing information
+        Info<< "pEqn timing: "
+            << "Assemble = " << accPEqnAsm << " s, "
+            << "Solve = " << accPEqnSol << " s, "
+            << "Total = " << (accPEqnAsm + accPEqnSol) << " s"
+            << nl;
+
+        // Reset accumulators for next time step
+        accPEqnAsm = 0.0;
+        accPEqnSol = 0.0;
 
         runTime.printExecutionTime(Info);
     }

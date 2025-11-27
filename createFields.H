@@ -128,3 +128,17 @@ mesh.setFluxRequired(alpha1.name());
 
 #include "createMRF.H"
 #include "createFvOptions.H"
+
+// Control parameters for GNN output
+bool writePressureSystem
+(
+    pimple.dict().lookupOrDefault<bool>("writePressureSystem", false)
+);
+
+label gnnWriteInterval
+(
+    pimple.dict().lookupOrDefault<label>("gnnWriteInterval", 1)
+);
+
+Info<< "writePressureSystem: " << writePressureSystem << nl
+    << "gnnWriteInterval: " << gnnWriteInterval << nl << endl;
