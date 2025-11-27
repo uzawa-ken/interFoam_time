@@ -1,0 +1,3 @@
+interFoam_time.C
+
+EXE = $(FOAM_APPBIN)/interFoam_time
